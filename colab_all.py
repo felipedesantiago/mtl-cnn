@@ -109,9 +109,7 @@ MODEL_SEPARATED_AGE = None
 RESULTS_FILENAME = None
 RESULTS_DICT = None
 
-EXPERIMENT = None
-
-"""# Auxiliar Functions""
+"""# Auxiliar Functions"""
 def print_batch(x1, y1, y2, with_prints=False):
     if with_prints:
         print("X1 shape: " + str(x1[0].shape))
