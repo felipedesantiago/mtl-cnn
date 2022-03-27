@@ -9,9 +9,6 @@ Original file is located at
 # Installs & Imports
 """
 
-!pip
-install
-comet_ml
 # datastes: https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/
 import comet_ml
 # from comet_ml import Experiment
