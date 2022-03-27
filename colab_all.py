@@ -9,7 +9,9 @@ Original file is located at
 # Installs & Imports
 """
 
-# !pip install comet_ml
+!pip
+install
+comet_ml
 # datastes: https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/
 import comet_ml
 # from comet_ml import Experiment
@@ -112,7 +114,7 @@ RESULTS_DICT = None
 
 EXPERIMENT = None
 
-"""# Auxiliar Functions"""
+"""# Auxiliar Functions""
 def print_batch(x1, y1, y2, with_prints=False):
     if with_prints:
         print("X1 shape: " + str(x1[0].shape))
@@ -239,14 +241,14 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False):
     print("Total PREDICTION time: " + str(diff_secs) + " - AVG: " + str(diff_secs) + "/" + str(max_imgs) + " = " + str(
         diff_secs / max_imgs))
     print("Confusion matriz: ")
-    print(str(y_true))
-    print(str(y_pred))
+    print("Gender true: " + str(y_true))
+    print("Gender pred: " + str(y_pred))
     # mapped_true = [int(round(a/10)) for a in y_true[1]] # map(lambda a : a/float(10), y_true[1])
     mapped_true = [int(floor(a / 10)) for a in y_true[1]]
     mapped_pred = [int(floor(a / 10)) for a in y_pred[1]]
     # mapped_pred = [int(round(a/10)) for a in y_pred[1]] # map(lambda a : a/float(10), y_pred[1])
-    print("MApped true " + str(mapped_true))
-    print("MApped pred " + str(mapped_pred))
+    print("Age true " + str(mapped_true))
+    print("Age pred " + str(mapped_pred))
     experiment = comet_ml.Experiment(
         api_key="6rubQB46mQ6XTVLSl26nH6zpV",
         project_name="Predictions",
@@ -280,26 +282,6 @@ def write_to_file(filename):
         csvfile.close()
     print("Updated results in: " + str(filename))
 
-
-"""# Comet ML"""
-
-# COMET_DISABLE_AUTO_LOGGING=1
-params = {
-    "batch_size": BATCH_SIZE,
-    "epochs": EPOCHS,
-    "num_classes": 2
-}
-global EXPERIMENT
-EXPERIMENT = comet_ml.Experiment(
-    api_key="6rubQB46mQ6XTVLSl26nH6zpV",
-    project_name="Gender / Age predictions",
-    auto_metric_logging=True,
-    auto_param_logging=True,
-    auto_histogram_weight_logging=True,
-    auto_histogram_gradient_logging=True,
-    auto_histogram_activation_logging=True
-)
-EXPERIMENT.log_parameters(params)
 
 """# Load & Save Model"""
 
@@ -448,7 +430,7 @@ loss_age = weighted_categorical_crossentropy(list(age_weights.values()))
 print("FIN")
 
 
-def train_model(model, train_path, validation_path, net_type, epochs=EPOCHS):  # MAL EL CLASS MODE
+def train_model(model, train_path, validation_path, epochs=EPOCHS):  # MAL EL CLASS MODE
     train_data_gen = CustomImageDataGenerator("train", flip_augm=True)  # B
     valid_data_gen = CustomImageDataGenerator("validation", flip_augm=True)  # B
     train_data = train_data_gen.flow(train_path, [], BATCH_SIZE)  # B
@@ -456,7 +438,7 @@ def train_model(model, train_path, validation_path, net_type, epochs=EPOCHS):  #
     # validate_batch_VGG_COMMON_GenderOut_accuracy
     # validate_VGG_COMMON_GenderOut_accuracy
     checkpoint = ModelCheckpoint(filepath=MODEL_PATH + NET_TYPE + '_model.h5',
-                                 monitor='val_'+net_type+'_AgeOut_accuracy', verbose=1, save_best_only=True, mode='max',
+                                 monitor='val_VGG16_COMMON_AgeOut_accuracy', verbose=1, save_best_only=True, mode='max',
                                  period=1)
     print("The TRAIN metric is: " + str(['accuracy']))
     # checkpoint = ModelCheckpoint(filepath=MODEL_PATH+NET_TYPE+'_model.h5', monitor='loss', verbose=1, save_best_only=True, mode='min', period=1)
@@ -731,3 +713,6 @@ except Exception as e:
     traceback.print_exc()
 
 predict_images(MODEL, max_imgs=1500, with_prints=False)
+
+
+tf.keras.utils.plot_model(MODEL)
