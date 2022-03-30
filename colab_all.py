@@ -106,9 +106,6 @@ MODEL_SEPARATED = None
 MODEL_SEPARATED_GENDER = None
 MODEL_SEPARATED_AGE = None
 
-RESULTS_FILENAME = None
-RESULTS_DICT = None
-
 """# Auxiliar Functions"""
 def print_batch(x1, y1, y2, with_prints=False):
     if with_prints:
