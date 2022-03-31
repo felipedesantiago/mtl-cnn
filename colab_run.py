@@ -46,12 +46,12 @@ predict = True
 MODEL = None
 try:
     if train:
-        MODEL = do_the_run(EPOCHS)
+        MODEL = do_the_run(EPOCHS, net_type="VGG16_COMMON") # LINE TO EDIT IN EACH DIFFERENT NOTEBOOK
         save_model(MODEL)
     if predict:
         MODEL = do_predictions()
 except Exception as e:
-    print("\nError with model VGG16_COMMON: " + str(e))
+    print("\nError with model "+str(MODEL)+": " + str(e))
     traceback.print_exc()
 
 predict_images(MODEL, max_imgs=1500, with_prints=False)
