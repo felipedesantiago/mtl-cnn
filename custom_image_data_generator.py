@@ -15,7 +15,7 @@ class CustomImageDataGenerator(object):
         self.images = []
         self.labels = [[], []]
 
-    def read_images(self, directory, max_paths=15, with_prints=False):
+    def read_images(self, directory, with_prints=False):
         image_paths = []
         invalids = []
         images_read = 0
@@ -45,7 +45,7 @@ class CustomImageDataGenerator(object):
         return image_paths
 
     # flow o flow_from_directory?
-    def flow(self, directory, classes, batch_size=32):
+    def flow(self, directory, batch_size=32):
         first = True
         shuffled_paths = []
         while True:

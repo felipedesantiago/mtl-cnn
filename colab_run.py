@@ -26,7 +26,8 @@ global RESULTS_FILENAME, RESULTS_DICT
 RESULTS_FILENAME = create_results_filename()
 RESULTS_DICT = {'Headers': create_header()}
 
-drive.mount('/content/gdrive')  # , force_remount=True)
+drive.mount('/content/gdrive', force_remount=True)
+#drive.mount('/content/gdrive')  # , force_remount=True)
 print(keras.__version__)
 DO_TRAIN = True
 train_images_data_gen = CustomImageDataGenerator("train")
