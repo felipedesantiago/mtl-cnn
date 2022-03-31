@@ -99,13 +99,6 @@ TOTALS = {"genders": {0: 0, 1: 0}, "ages": {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 
 
 MAX_PREDICTION_IMAGES = 75  # 75 #MAX: 78
 
-MODEL_COMMON = None
-MODEL_NDDR = None
-MODEL_PARALEL = None
-MODEL_SEPARATED = None
-MODEL_SEPARATED_GENDER = None
-MODEL_SEPARATED_AGE = None
-
 """# Auxiliar Functions"""
 def print_batch(x1, y1, y2, with_prints=False):
     if with_prints:
@@ -667,7 +660,6 @@ def do_predictions(epochs=-1):
 
 drive.mount('/content/gdrive')  # , force_remount=True)
 print(keras.__version__)
-global MODEL_NDDR, MODEL_COMMON, MODEL_PARALEL, MODEL_SEPARATED, MODEL_SEPARATED_GENDER, MODEL_SEPARATED_AGE, DO_TRAIN
 DO_TRAIN = True
 train_images_data_gen = CustomImageDataGenerator("train")
 validation_images_data_gen = CustomImageDataGenerator("validation")
