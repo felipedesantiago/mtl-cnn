@@ -8,7 +8,7 @@ from keras.layers.pooling import MaxPooling2D
 from keras.layers import Dense, Flatten
 
 
-def build_vgg16_net():
+def build_vgg16_net(loss_function):
     trainable_age = NET_TYPE != "VGG_SEPARATED_GENDER"
     trainable_gender = NET_TYPE != "VGG_SEPARATED_AGE"
     input = Input(shape=(IMAGE_WIDTH, IMAGE_HEIGHT, DIMS), name="InputImage")
@@ -61,7 +61,8 @@ def build_vgg16_net():
 
     opt = adam_opt(learning_rate=LEARNING_RATE)
     # loss_func = tf.keras.losses.CategoricalCrossentropy(from_logits=False, reduction="auto", name="sparse_categorical_crossentropy")
-    loss_func = ['categorical_crossentropy', 'categorical_crossentropy']
+    if loss_function == None:
+        loss_func = ['categorical_crossentropy', 'categorical_crossentropy']
     print("The COMPILE metric is: " + str(['categorical_crossentropy']))
 
     # model.compile(loss={NET_TYPE+'_GenderOut':loss_gender, NET_TYPE+'_AgeOut':loss_age}, optimizer=opt, loss_weights=[1, 1], metrics={NET_TYPE+'_GenderOut':'accuracy', NET_TYPE+'_AgeOut':'accuracy'})

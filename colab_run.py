@@ -12,7 +12,6 @@ Original file is located at
 # datastes: https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/
 import tensorflow as tf, traceback
 from tensorflow import keras as keras
-from google.colab import drive
 
 from custom_image_data_generator import CustomImageDataGenerator
 from utils import create_results_filename, create_header, write_to_file
@@ -26,35 +25,33 @@ global RESULTS_FILENAME, RESULTS_DICT
 RESULTS_FILENAME = create_results_filename()
 RESULTS_DICT = {'Headers': create_header()}
 
-drive.mount('/content/gdrive', force_remount=True)
-#drive.mount('/content/gdrive')  # , force_remount=True)
 print(keras.__version__)
 DO_TRAIN = True
-train_images_data_gen = CustomImageDataGenerator("train")
-validation_images_data_gen = CustomImageDataGenerator("validation")
-print("TRAINING IMAGES: Required: " + str(BATCH_SIZE * EPOCHS * STEPS_EPOCHS) + ", actual: " + str(len(train_images_data_gen.read_images(DATA_PATH))))
-print("VALIDATION IMAGES: Required: " + str(BATCH_SIZE_VAL * EPOCHS * STEPS_VAL) + ", actual: " + str(len(validation_images_data_gen.read_images(DATA_PATH))))
-if DO_TRAIN:
-    train_data = train_images_data_gen.flow(DATA_PATH, [], 1)  # B
-    valid_data = validation_images_data_gen.flow(DATA_PATH, [], 1)  # B
+def test_generator():
+    train_images_data_gen = CustomImageDataGenerator("train")
+    validation_images_data_gen = CustomImageDataGenerator("validation")
+    print("TRAINING IMAGES: Required: " + str(BATCH_SIZE * EPOCHS * STEPS_EPOCHS) + ", actual: " + str(len(train_images_data_gen.read_images(DATA_PATH))))
+    print("VALIDATION IMAGES: Required: " + str(BATCH_SIZE_VAL * EPOCHS * STEPS_VAL) + ", actual: " + str(len(validation_images_data_gen.read_images(DATA_PATH))))
+    if DO_TRAIN:
+        train_data = train_images_data_gen.flow(DATA_PATH, [], 1)  # B
+        valid_data = validation_images_data_gen.flow(DATA_PATH, [], 1)  # B
 
-print(RESULTS_DICT)
-write_to_file(create_results_filename())
+    print(RESULTS_DICT)
+
 
 train = True
 predict = True
 # for key, value in d.items():
 MODEL = None
 try:
+    write_to_file(create_results_filename())
     if train:
         MODEL = do_the_run(EPOCHS, net_type="VGG16_COMMON") # LINE TO EDIT IN EACH DIFFERENT NOTEBOOK
         save_model(MODEL)
     if predict:
         MODEL = do_predictions()
+    predict_images(MODEL, max_imgs=1500, with_prints=False)
+    tf.keras.utils.plot_model(MODEL)
 except Exception as e:
     print("\nError with model "+str(MODEL)+": " + str(e))
     traceback.print_exc()
-
-predict_images(MODEL, max_imgs=1500, with_prints=False)
-
-tf.keras.utils.plot_model(MODEL)
