@@ -24,6 +24,6 @@ def train_model(model, train_path, validation_path, epochs=EPOCHS):  # MAL EL CL
     #with EXPERIMENT.train():
     history = model.fit_generator(generator=train_data, validation_data=valid_data, validation_steps=STEPS_VAL, steps_per_epoch=STEPS_EPOCHS, epochs=epochs, callbacks=[checkpoint], verbose=1)
     diff_secs = (datetime.datetime.now() - start_time).total_seconds()
-    RESULTS_DICT[NET_TYPE].append(str(diff_secs / epochs))
+    # RESULTS_DICT[NET_TYPE].append(str(diff_secs / epochs))
     print("Total TRAIN time: " + str(diff_secs) + " - AVG: " + str(diff_secs) + "/" + str(epochs) + " = " + str(diff_secs / epochs))
     return history

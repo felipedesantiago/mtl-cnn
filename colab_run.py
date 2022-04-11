@@ -36,7 +36,7 @@ def test_generator():
         train_data = train_images_data_gen.flow(DATA_PATH, [], 1)  # B
         valid_data = validation_images_data_gen.flow(DATA_PATH, [], 1)  # B
 
-    print(RESULTS_DICT)
+    # print(RESULTS_DICT)
 
 
 train = True

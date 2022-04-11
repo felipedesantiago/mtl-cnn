@@ -122,13 +122,10 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False):
     print("Age error average: " + str(
         pred_accuracy["age"][0] / pred_accuracy["age"][1])) if "SEPARATED_GENDER" not in NET_TYPE else print(
         "Age error average: -")
-    RESULTS_DICT[NET_TYPE].append(str(diff_secs / max_imgs))
-    RESULTS_DICT[NET_TYPE].append(
-        str(pred_accuracy["gender"][0] / pred_accuracy["gender"][1])) if "SEPARATED_AGE" not in NET_TYPE else \
-    RESULTS_DICT[NET_TYPE].append("")
-    RESULTS_DICT[NET_TYPE].append(
-        str(pred_accuracy["age"][0] / pred_accuracy["age"][1])) if "SEPARATED_GENDER" not in NET_TYPE else RESULTS_DICT[
-        NET_TYPE].append("")
+    # RESULTS_DICT[NET_TYPE].append(str(diff_secs / max_imgs))
+    # RESULTS_DICT[NET_TYPE].append(str(pred_accuracy["gender"][0] / pred_accuracy["gender"][1])) if "SEPARATED_AGE" not in NET_TYPE else \
+    # RESULTS_DICT[NET_TYPE].append("")
+    # RESULTS_DICT[NET_TYPE].append(str(pred_accuracy["age"][0] / pred_accuracy["age"][1])) if "SEPARATED_GENDER" not in NET_TYPE else RESULTS_DICT[NET_TYPE].append("")
     print("Total PREDICTION time: " + str(diff_secs) + " - AVG: " + str(diff_secs) + "/" + str(max_imgs) + " = " + str(
         diff_secs / max_imgs))
     print("Confusion matriz: ")
@@ -168,7 +165,7 @@ def create_header():
 def write_to_file(filename):
     with open(filename, "w") as csvfile:
         writer = csv.writer(csvfile)
-        for key in RESULTS_DICT.keys():
-            writer.writerow(RESULTS_DICT[key])
-        csvfile.close()
+        # for key in RESULTS_DICT.keys():
+        #     writer.writerow(RESULTS_DICT[key])
+        # csvfile.close()
     print("Updated results in: " + str(filename))
