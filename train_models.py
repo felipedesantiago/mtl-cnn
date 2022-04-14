@@ -8,14 +8,14 @@ from keras.callbacks import ModelCheckpoint
 import datetime
 from parameters import *
 
-def train_model(model, train_path, validation_path, epochs=EPOCHS):  # MAL EL CLASS MODE
+def train_model(model, train_path, validation_path, net_type, epochs=EPOCHS):  # MAL EL CLASS MODE
     train_data_gen = CustomImageDataGenerator("train", flip_augm=True)  # B
     valid_data_gen = CustomImageDataGenerator("validation", flip_augm=True)  # B
     train_data = train_data_gen.flow(train_path, BATCH_SIZE)  # B
     valid_data = valid_data_gen.flow(validation_path, BATCH_SIZE_VAL)  # B
     # validate_batch_VGG_COMMON_GenderOut_accuracy
     # validate_VGG_COMMON_GenderOut_accuracy
-    checkpoint = ModelCheckpoint(filepath=MODEL_PATH + NET_TYPE + '_model.h5',
+    checkpoint = ModelCheckpoint(filepath=MODEL_PATH + net_type + '_model.h5',
                                  monitor='val_VGG16_COMMON_AgeOut_accuracy', verbose=1, save_best_only=True, mode='max',
                                  period=1)
     print("The TRAIN metric is: " + str(['accuracy']))
