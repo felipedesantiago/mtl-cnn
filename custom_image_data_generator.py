@@ -1,5 +1,6 @@
 """# Custom Image Data Generator"""
 import pathlib, numpy as np
+from PIL import Image as pil_image
 from random import shuffle
 from utils import print_batch
 from tensorflow.keras.utils import to_categorical
