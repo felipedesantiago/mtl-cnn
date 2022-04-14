@@ -46,7 +46,7 @@ MODEL = None
 try:
     # write_to_file(create_results_filename())
     if train:
-        MODEL = do_the_run(EPOCHS, net_type="VGG16_COMMON") # LINE TO EDIT IN EACH DIFFERENT NOTEBOOK
+        MODEL = do_the_run(net_type="VGG16_COMMON") # LINE TO EDIT IN EACH DIFFERENT NOTEBOOK
         save_model(MODEL)
     if predict:
         MODEL = do_predictions()

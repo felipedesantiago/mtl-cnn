@@ -6,11 +6,12 @@ from keras.layers.convolutional import Conv2D # ???
 from keras.layers import Conv2D, Input        # ???
 from keras.layers.pooling import MaxPooling2D
 from keras.layers import Dense, Flatten
+from parameters import *
 
 
-def build_vgg16_net(loss_function):
-    trainable_age = NET_TYPE != "VGG_SEPARATED_GENDER"
-    trainable_gender = NET_TYPE != "VGG_SEPARATED_AGE"
+def build_vgg16_net(loss_function, net_type):
+    trainable_age = net_type != "VGG_SEPARATED_GENDER"
+    trainable_gender = net_type != "VGG_SEPARATED_AGE"
     input = Input(shape=(IMAGE_WIDTH, IMAGE_HEIGHT, DIMS), name="InputImage")
     #######################################################################################
     net = Conv2D(name="gender_age_conv_1_1", filters=64, input_shape=(28, 28, 3), kernel_size=(3, 3), padding="same",
@@ -54,10 +55,10 @@ def build_vgg16_net(loss_function):
     age = Flatten()(net)
     gender = Flatten()(net)
 
-    output_gender = Dense(2, activation='softmax', name=NET_TYPE + "_GenderOut", trainable=trainable_gender)(gender)
-    output_age = Dense(10, activation='softmax', name=NET_TYPE + "_AgeOut", trainable=trainable_age)(age)
+    output_gender = Dense(2, activation='softmax', name=net_type + "_GenderOut", trainable=trainable_gender)(gender)
+    output_age = Dense(10, activation='softmax', name=net_type + "_AgeOut", trainable=trainable_age)(age)
 
-    model = Model(inputs=input, outputs=[output_gender, output_age], name=NET_TYPE)
+    model = Model(inputs=input, outputs=[output_gender, output_age], name=net_type)
 
     opt = adam_opt(learning_rate=LEARNING_RATE)
     # loss_func = tf.keras.losses.CategoricalCrossentropy(from_logits=False, reduction="auto", name="sparse_categorical_crossentropy")
@@ -68,7 +69,7 @@ def build_vgg16_net(loss_function):
     # model.compile(loss={NET_TYPE+'_GenderOut':loss_gender, NET_TYPE+'_AgeOut':loss_age}, optimizer=opt, loss_weights=[1, 1], metrics={NET_TYPE+'_GenderOut':'accuracy', NET_TYPE+'_AgeOut':'accuracy'})
     # model.compile(loss={NET_TYPE+'_GenderOut':loss_gender, NET_TYPE+'_AgeOut':loss_age}, optimizer=opt, loss_weights=[gen_weights, age_weights], metrics={NET_TYPE+'_GenderOut':'accuracy', NET_TYPE+'_AgeOut':'accuracy'})
     model.compile(loss=loss_func, optimizer=opt, loss_weights=[gen_weights, age_weights],
-                  metrics={NET_TYPE + '_GenderOut': 'accuracy', NET_TYPE + '_AgeOut': 'accuracy'})
+                  metrics={net_type + '_GenderOut': 'accuracy', net_type + '_AgeOut': 'accuracy'})
     # matriz de confusion
     print(model.summary())
     return model

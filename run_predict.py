@@ -9,7 +9,7 @@ from utils import plot_history, predict_images
 from load_save_model import load_model_from_disk, save_model
 from parameters import *
 
-def do_the_run(epochs, net_type):
+def do_the_run(net_type):
     # 'Epchos','Train steps','Val steps','Batch Size'
     global NET_TYPE
     NET_TYPE = net_type # "VGG16_COMMON"
@@ -18,7 +18,7 @@ def do_the_run(epochs, net_type):
     # RESULTS_DICT[NET_TYPE] = [NET_TYPE, str(epochs), str(STEPS_EPOCHS), str(STEPS_VAL), str(BATCH_SIZE)]
     print("\nStarting training with net " + str(NET_TYPE))
 
-    model = build_vgg16_net(get_loss)
+    model = build_vgg16_net(get_loss, net_type)
 
     history = train_model(model, DATA_PATH, DATA_PATH, net_type)
     plot_history(history)
