@@ -46,7 +46,7 @@ class CustomImageDataGenerator(object):
         return image_paths
 
     # flow o flow_from_directory?
-    def flow(self, directory, batch_size=32):
+    def flow(self, directory, net_type, batch_size=32):
         first = True
         shuffled_paths = []
         while True:
@@ -86,8 +86,8 @@ class CustomImageDataGenerator(object):
             # inputs = tuple([np.stack(samples, axis=0) for samples in zip(*self.images)])
             # inputs = tuple(inputs)
             targets = {
-                NET_TYPE + '_GenderOut': np.asarray(to_categorical(self.labels[0], num_classes=2), dtype=np.float32),
-                NET_TYPE + '_AgeOut': np.asarray(to_categorical(self.labels[1], num_classes=10), dtype=np.float32)}
+                net_type + '_GenderOut': np.asarray(to_categorical(self.labels[0], num_classes=2), dtype=np.float32),
+                net_type + '_AgeOut': np.asarray(to_categorical(self.labels[1], num_classes=10), dtype=np.float32)}
             # targets = [np.asarray(to_categorical(self.labels[0], num_classes=2), dtype=np.float32),np.asarray(to_categorical(self.labels[1], num_classes=10), dtype=np.float32)]
             self.reset()
             # print(inputs.shape)
@@ -97,7 +97,7 @@ class CustomImageDataGenerator(object):
             # print("INPUTS: " + str(inputs.shape))
             # print("TARGETS GENDER: " + str(targets['GenderOut'].shape))
             # print("TARGETS AGE: " + str(targets['AgeOut'].shape))
-            if NET_TYPE == None and len(shuffled_paths) == 0:
+            if net_type is None and len(shuffled_paths) == 0:
                 print("returning because nothing")
                 return
             else:

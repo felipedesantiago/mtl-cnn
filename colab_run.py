@@ -27,14 +27,14 @@ RESULTS_DICT = {'Headers': create_header()}
 
 print(keras.__version__)
 DO_TRAIN = True
-def test_generator():
+def test_generator(net_type):
     train_images_data_gen = CustomImageDataGenerator("train")
     validation_images_data_gen = CustomImageDataGenerator("validation")
     print("TRAINING IMAGES: Required: " + str(BATCH_SIZE * EPOCHS * STEPS_EPOCHS) + ", actual: " + str(len(train_images_data_gen.read_images(DATA_PATH))))
     print("VALIDATION IMAGES: Required: " + str(BATCH_SIZE_VAL * EPOCHS * STEPS_VAL) + ", actual: " + str(len(validation_images_data_gen.read_images(DATA_PATH))))
     if DO_TRAIN:
-        train_data = train_images_data_gen.flow(DATA_PATH, 1)  # B
-        valid_data = validation_images_data_gen.flow(DATA_PATH, 1)  # B
+        train_data = train_images_data_gen.flow(DATA_PATH, net_type, 1)  # B
+        valid_data = validation_images_data_gen.flow(DATA_PATH, net_type, 1)  # B
 
     # print(RESULTS_DICT)
 

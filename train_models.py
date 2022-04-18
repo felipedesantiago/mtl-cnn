@@ -11,8 +11,8 @@ from parameters import *
 def train_model(model, train_path, validation_path, net_type, epochs=EPOCHS):  # MAL EL CLASS MODE
     train_data_gen = CustomImageDataGenerator("train", flip_augm=True)  # B
     valid_data_gen = CustomImageDataGenerator("validation", flip_augm=True)  # B
-    train_data = train_data_gen.flow(train_path, BATCH_SIZE)  # B
-    valid_data = valid_data_gen.flow(validation_path, BATCH_SIZE_VAL)  # B
+    train_data = train_data_gen.flow(train_path, net_type, BATCH_SIZE)  # B
+    valid_data = valid_data_gen.flow(validation_path, net_type, BATCH_SIZE_VAL)  # B
     # validate_batch_VGG_COMMON_GenderOut_accuracy
     # validate_VGG_COMMON_GenderOut_accuracy
     checkpoint = ModelCheckpoint(filepath=MODEL_PATH + net_type + '_model.h5',
