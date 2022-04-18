@@ -19,6 +19,10 @@ def do_the_run(net_type):
     print("\nStarting training with net " + str(NET_TYPE))
 
     model = build_vgg16_net(get_loss, net_type)
+    if model is None:
+        print("MODEL IS NONE")
+    else:
+        print("MODEL AINT NONE")
 
     history = train_model(model, DATA_PATH, DATA_PATH, net_type)
     plot_history(history)
