@@ -33,13 +33,9 @@ def do_the_run(net_type):
     return model
 
 
-def do_predictions(net_type, epochs=-1):
+def do_predictions(net_type):
     # RESULTS_DICT[NET_TYPE] = [NET_TYPE, str(epochs), str(STEPS_EPOCHS), str(STEPS_VAL), str(BATCH_SIZE)]
     print("\nStarting load & predict with net " + str(net_type))
     model = load_model_from_disk()
-    if epochs > 0:
-        history = train_model(model, DATA_PATH, DATA_PATH, net_type)
-        plot_history(history)
-        save_model(model)
     predict_images(model)
     return model
