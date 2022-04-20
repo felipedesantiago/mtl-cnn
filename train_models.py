@@ -15,9 +15,7 @@ def train_model(model, train_path, validation_path, net_type, epochs=EPOCHS):  #
     valid_data = valid_data_gen.flow(validation_path, net_type, BATCH_SIZE_VAL)  # B
     # validate_batch_VGG_COMMON_GenderOut_accuracy
     # validate_VGG_COMMON_GenderOut_accuracy
-    checkpoint = ModelCheckpoint(filepath=MODEL_PATH + net_type + '_model.h5',
-                                 monitor='val_VGG16_COMMON_AgeOut_accuracy', verbose=1, save_best_only=True, mode='max',
-                                 period=1)
+    checkpoint = ModelCheckpoint(filepath=MODEL_PATH+net_type+'_model.h5', monitor='val_VGG16_COMMON_AgeOut_accuracy', verbose=1, save_best_only=True, mode='max', period=1)
     print("The TRAIN metric is: " + str(['accuracy']))
     # checkpoint = ModelCheckpoint(filepath=MODEL_PATH+NET_TYPE+'_model.h5', monitor='loss', verbose=1, save_best_only=True, mode='min', period=1)
     start_time = datetime.datetime.now()
