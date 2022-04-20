@@ -12,7 +12,7 @@ class_weights_mnist = generate_class_weights(train_labels, one_hot_encoded=False
 n_classes = len(class_weights_mnist)
 print(str(class_weights_mnist))
 print(str(n_classes))
-loss = weighted_categorical_crossentropy(list(class_weights.values()))
+loss = weighted_categorical_crossentropy(list(class_weights_mnist.values()))
 # Method by Morten Grøftehauge. # Source: https://github.com/keras-team/keras/issues/11735#issuecomment-641775516
 
 # Build model with Keras Functional API

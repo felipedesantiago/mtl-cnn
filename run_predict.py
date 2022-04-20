@@ -1,7 +1,7 @@
 """# Prediction and train functions"""
 # Comparar VGG_age_gender vs VGG_AGE Y VGG_GENDER
 #### TRAINING PARALEL FEATURE PROCESSING NETWORK ###
-from vgg_16_net import build_vgg16_net
+from vgg_16_net import  build_vgg16_net
 from train_models import train_model
 from custom_losses import get_loss
 # from utils import create_header, create_results_filename, matrix_as_shape_list, plot_history, predict_images, print_batch, write_to_file
@@ -18,7 +18,7 @@ def do_the_run(net_type):
     # RESULTS_DICT[NET_TYPE] = [NET_TYPE, str(epochs), str(STEPS_EPOCHS), str(STEPS_VAL), str(BATCH_SIZE)]
     print("\nStarting training with net " + str(NET_TYPE))
 
-    model = build_vgg16_net(get_loss, net_type)
+    model = build_vgg16_net(get_loss(GEN_WEIGHTS), get_loss(AGE_WEIGHTS), net_type)
     if model is None:
         print("MODEL IS NONE")
     else:
