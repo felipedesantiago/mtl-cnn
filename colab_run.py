@@ -38,21 +38,20 @@ def test_generator(net_type):
 
     # print(RESULTS_DICT)
 
-
-train = True
-predict = True
-# for key, value in d.items():
-MODEL = None
-try:
-    # write_to_file(create_results_filename())
-    net_type = "VGG16_COMMON"
-    if train:
-        MODEL = do_the_run(net_type=net_type) # LINE TO EDIT IN EACH DIFFERENT NOTEBOOK
-        save_model(MODEL)
-    if predict:
-        MODEL = do_predictions(net_type=net_type)
-    predict_images(MODEL, max_imgs=1500, with_prints=False)
-    tf.keras.utils.plot_model(MODEL)
-except Exception as e:
-    print("\nError with model "+str(MODEL)+": " + str(e))
-    traceback.print_exc()
+def train_and_predict(net_type="VGG16_COMMON"):
+    train = True
+    predict = True
+    # for key, value in d.items():
+    MODEL = None
+    try:
+        # write_to_file(create_results_filename())
+        if train:
+            MODEL = do_the_run(net_type=net_type) # LINE TO EDIT IN EACH DIFFERENT NOTEBOOK
+            save_model(MODEL)
+        if predict:
+            MODEL = do_predictions(net_type=net_type)
+        predict_images(MODEL, max_imgs=1500, with_prints=False)
+        tf.keras.utils.plot_model(MODEL)
+    except Exception as e:
+        print("\nError with model "+str(MODEL)+": " + str(e))
+        traceback.print_exc()
