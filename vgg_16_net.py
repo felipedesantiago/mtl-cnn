@@ -62,13 +62,14 @@ def build_vgg16_net(loss_gender, loss_age, net_type):
 
     opt = adam_opt(learning_rate=LEARNING_RATE)
     # loss_func = tf.keras.losses.CategoricalCrossentropy(from_logits=False, reduction="auto", name="sparse_categorical_crossentropy")
-    loss_function = ['categorical_crossentropy', 'categorical_crossentropy'] if loss_function is None else loss_function
+    #loss_functions = ['categorical_crossentropy', 'categorical_crossentropy'] if loss_function is None else loss_function
+    loss_functions = {net_type + '_GenderOut': loss_gender, net_type + '_AgeOut': loss_age}
     print("The COMPILE metric is: " + str(['categorical_crossentropy']))
 
     # model.compile(loss={NET_TYPE+'_GenderOut':loss_gender, NET_TYPE+'_AgeOut':loss_age}, optimizer=opt, loss_weights=[1, 1], metrics={NET_TYPE+'_GenderOut':'accuracy', NET_TYPE+'_AgeOut':'accuracy'})
     # model.compile(loss={NET_TYPE+'_GenderOut':loss_gender, NET_TYPE+'_AgeOut':loss_age}, optimizer=opt, loss_weights=[gen_weights, age_weights], metrics={NET_TYPE+'_GenderOut':'accuracy', NET_TYPE+'_AgeOut':'accuracy'})
     # model.compile(loss=[loss_function, loss_function], optimizer=opt, loss_weights=[GEN_WEIGHTS, AGE_WEIGHTS], metrics={net_type + '_GenderOut': 'accuracy', net_type + '_AgeOut': 'accuracy'})
-    model.compile(loss={net_type + '_GenderOut': loss_gender, net_type + '_AgeOut': loss_age}, optimizer=opt, metrics={net_type + '_GenderOut': 'accuracy', net_type + '_AgeOut': 'accuracy'})
+    model.compile(loss=loss_functions, optimizer=opt, metrics={net_type + '_GenderOut': 'accuracy', net_type + '_AgeOut': 'accuracy'})
     # matriz de confusion
     print(model.summary())
     return model
