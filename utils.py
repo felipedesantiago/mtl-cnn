@@ -5,6 +5,7 @@ from IPython.display import Image, display
 import os, cv2, csv, datetime, numpy as np
 import comet_ml
 from parameters import *
+from math import floor
 
 def print_batch(x1, y1, y2, with_prints=False):
     if with_prints:
