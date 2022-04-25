@@ -47,7 +47,7 @@ def train_and_predict(net_type="VGG16_COMMON"):
         # write_to_file(create_results_filename())
         if train:
             MODEL = do_the_run(net_type=net_type) # LINE TO EDIT IN EACH DIFFERENT NOTEBOOK
-            save_model(MODEL)
+            save_model(MODEL, net_type)
         if predict:
             MODEL = do_predictions(net_type=net_type)
         predict_images(MODEL, max_imgs=1500, with_prints=False)

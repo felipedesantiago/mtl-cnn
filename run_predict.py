@@ -39,6 +39,6 @@ def do_the_run(net_type):
 def do_predictions(net_type):
     # RESULTS_DICT[NET_TYPE] = [NET_TYPE, str(epochs), str(STEPS_EPOCHS), str(STEPS_VAL), str(BATCH_SIZE)]
     print("\nStarting load & predict with net " + str(net_type))
-    model = load_model_from_disk()
+    model = load_model_from_disk(net_type)
     predict_images(model)
     return model
