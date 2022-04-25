@@ -18,6 +18,7 @@ STEPS_EPOCHS = 3 # 1182  # training images #trainimages / batch_size * 2 (2 beca
 STEPS_VAL = 3 # 294  # valid images #trainimages / batch_size * 2 (2 because of DA flip)
 
 DATA_PATH = "/content/gdrive/MyDrive/ColabNotebooks/images/datasets/UTKFace/"
+DATA_TEST_PATH = "/content/gdrive/MyDrive/ColabNotebooks/images/datasets/predict/"
 MODEL_PATH = "/content/gdrive/MyDrive/ColabNotebooks/models/"
 DO_TRAIN = True
 PLOT_MODELS = True

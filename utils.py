@@ -72,17 +72,16 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False, net
     age_idx = 1
     # if "SEPARATED_AGE" in net_type:
     #     age_idx = 0
-    PREDICTION_PATHS = "gdrive/MyDrive/ColabNotebooks/images/datasets/predict/"
     start_time = datetime.datetime.now()
     y_true = [[], []]
     y_pred = [[], []]
-    for img_path in os.listdir(PREDICTION_PATHS):
+    for img_path in os.listdir(DATA_TEST_PATH):
         # TRY to do a model.predict() with a set or list of images, instead of one by one?
         if with_prints:
             print("\nImage: " + str(img_path))
-            display(Image(os.path.join(PREDICTION_PATHS, img_path), width=preview_size, height=preview_size))
+            display(Image(os.path.join(DATA_TEST_PATH, img_path), width=preview_size, height=preview_size))
 
-        img = cv2.imread(os.path.join(PREDICTION_PATHS, img_path))
+        img = cv2.imread(os.path.join(DATA_TEST_PATH, img_path))
         # img = img[..., ::-1]
         img = cv2.resize(img, (IMAGE_WIDTH, IMAGE_HEIGHT))
         img = np.expand_dims(img, axis=0)
