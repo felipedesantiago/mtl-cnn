@@ -20,7 +20,7 @@ def matrix_as_shape_list(the_matrix):
     return " shape: " + str(the_matrix.shape) + " - " + " ".join(map(str, res))
 
 
-def plot_history(history):
+def plot_history(history, net_type=VGG16_COMMON):
     # {'loss': [2.7617995738983154], 'GenderOut_loss': [0.6187705993652344], 'AgeOut_loss': [2.143028974533081], 'GenderOut_accuracy': [0.7515624761581421], 'AgeOut_accuracy': [0.2515625059604645]}
     # Agregar validación a las gráficas
     # val_loss - val_GenderOut_loss - val_AgeOut_loss - val_GenderOut_accuracy - val_AgeOut_accuracy
@@ -29,15 +29,15 @@ def plot_history(history):
     print("The history: " + str(history.history))
     plt.style.use('seaborn-whitegrid')
     plt.axes()
-    plt.plot(history.history['val_' + NET_TYPE + '_GenderOut_accuracy'], 'r',
-             label="GenderVAL") if 'val_' + NET_TYPE + '_GenderOut_accuracy' in history.history else None
-    # plt.plot(history.history[NET_TYPE+'_GenderOut_accuracy'],'m', label="GenderTRAIN") if NET_TYPE+'_GenderOut_accuracy' in history.history else None
-    plt.plot(history.history['val_' + NET_TYPE + '_AgeOut_accuracy'], 'b',
-             label="AgeVAL") if 'val_' + NET_TYPE + '_AgeOut_accuracy' in history.history else None
-    # plt.plot(history.history[NET_TYPE+'_AgeOut_accuracy'],'c', label="AgeTRAIN") if NET_TYPE+'_AgeOut_accuracy' in history.history else None
+    plt.plot(history.history['val_' + net_type + '_GenderOut_accuracy'], 'r',
+             label="GenderVAL") if 'val_' + net_type + '_GenderOut_accuracy' in history.history else None
+    # plt.plot(history.history[net_type+'_GenderOut_accuracy'],'m', label="GenderTRAIN") if net_type+'_GenderOut_accuracy' in history.history else None
+    plt.plot(history.history['val_' + net_type + '_AgeOut_accuracy'], 'b',
+             label="AgeVAL") if 'val_' + net_type + '_AgeOut_accuracy' in history.history else None
+    # plt.plot(history.history[net_type+'_AgeOut_accuracy'],'c', label="AgeTRAIN") if net_type+'_AgeOut_accuracy' in history.history else None
     plt.plot(history.history['accuracy'], 'm', label="TRAIN") if 'accuracy' in history.history else None
     plt.plot(history.history['val_accuracy'], 'r', label="VAL") if 'val_accuracy' in history.history else None
-    plt.title('Accuracy ' + NET_TYPE)
+    plt.title('Accuracy ' + net_type)
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
     plt.legend()
@@ -47,22 +47,22 @@ def plot_history(history):
     plt.style.use('seaborn-whitegrid')
     plt.axes()
     plt.plot(history.history['loss'], 'g', label="Combined") if 'loss' in history.history else None
-    plt.plot(history.history['val_' + NET_TYPE + '_GenderOut_loss'], 'r',
-             label="GenderVAL") if 'val_' + NET_TYPE + '_GenderOut_loss' in history.history else None
-    # plt.plot(history.history[NET_TYPE+'_GenderOut_loss'],'m', label="GenderTRAIN") if NET_TYPE+'_GenderOut_loss' in history.history else None
-    plt.plot(history.history['val_' + NET_TYPE + '_AgeOut_loss'], 'b',
-             label="AgeVAL") if 'val_' + NET_TYPE + '_AgeOut_loss' in history.history else None
-    # plt.plot(history.history[NET_TYPE+'_AgeOut_loss'],'c', label="AgeTRAIN") if NET_TYPE+'_AgeOut_loss' in history.history else None
+    plt.plot(history.history['val_' + net_type + '_GenderOut_loss'], 'r',
+             label="GenderVAL") if 'val_' + net_type + '_GenderOut_loss' in history.history else None
+    # plt.plot(history.history[net_type+'_GenderOut_loss'],'m', label="GenderTRAIN") if net_type+'_GenderOut_loss' in history.history else None
+    plt.plot(history.history['val_' + net_type + '_AgeOut_loss'], 'b',
+             label="AgeVAL") if 'val_' + net_type + '_AgeOut_loss' in history.history else None
+    # plt.plot(history.history[net_type+'_AgeOut_loss'],'c', label="AgeTRAIN") if net_type+'_AgeOut_loss' in history.history else None
     plt.plot(history.history['loss'], 'm', label="TRAIN") if 'loss' in history.history else None
     plt.plot(history.history['val_loss'], 'r', label="VAL") if 'val_loss' in history.history else None
-    plt.title('Loss ' + NET_TYPE)
+    plt.title('Loss ' + net_type)
     plt.ylabel('loss')
     plt.xlabel('epoch')
     plt.legend()
     plt.show()
 
 
-def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False):
+def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False, net_type=VGG16_COMMON):
     preview_size = 50
     print("Predicting...")
     print(TOTALS)
@@ -70,8 +70,8 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False):
     pred_accuracy = {"gender": [0, 0], "age": [0, 0]}
     gen_idx = 0
     age_idx = 1
-    if "SEPARATED_AGE" in NET_TYPE:
-        age_idx = 0
+    # if "SEPARATED_AGE" in net_type:
+    #     age_idx = 0
     PREDICTION_PATHS = "gdrive/MyDrive/ColabNotebooks/images/datasets/predict/"
     start_time = datetime.datetime.now()
     y_true = [[], []]
@@ -86,7 +86,7 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False):
         # img = img[..., ::-1]
         img = cv2.resize(img, (IMAGE_WIDTH, IMAGE_HEIGHT))
         img = np.expand_dims(img, axis=0)
-        # print("predicting the net: "+NET_TYPE)
+        # print("predicting the net: "+net_type)
         prediction = model.predict(img)
 
         preds = "Gender preds: "
@@ -116,16 +116,12 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False):
             predicted += 1
     diff_secs = (datetime.datetime.now() - start_time).total_seconds()
     print(str(pred_accuracy))
-    print("Gender error average: " + str(
-        pred_accuracy["gender"][0] / pred_accuracy["gender"][1])) if "SEPARATED_AGE" not in NET_TYPE else print(
-        "Gender error average: -")
-    print("Age error average: " + str(
-        pred_accuracy["age"][0] / pred_accuracy["age"][1])) if "SEPARATED_GENDER" not in NET_TYPE else print(
-        "Age error average: -")
-    # RESULTS_DICT[NET_TYPE].append(str(diff_secs / max_imgs))
-    # RESULTS_DICT[NET_TYPE].append(str(pred_accuracy["gender"][0] / pred_accuracy["gender"][1])) if "SEPARATED_AGE" not in NET_TYPE else \
-    # RESULTS_DICT[NET_TYPE].append("")
-    # RESULTS_DICT[NET_TYPE].append(str(pred_accuracy["age"][0] / pred_accuracy["age"][1])) if "SEPARATED_GENDER" not in NET_TYPE else RESULTS_DICT[NET_TYPE].append("")
+    print("Gender error average: " + str(pred_accuracy["gender"][0] / pred_accuracy["gender"][1]))
+    print("Age error average: " + str(pred_accuracy["age"][0] / pred_accuracy["age"][1]))
+    # RESULTS_DICT[net_type].append(str(diff_secs / max_imgs))
+    # RESULTS_DICT[net_type].append(str(pred_accuracy["gender"][0] / pred_accuracy["gender"][1])) if "SEPARATED_AGE" not in net_type else \
+    # RESULTS_DICT[net_type].append("")
+    # RESULTS_DICT[net_type].append(str(pred_accuracy["age"][0] / pred_accuracy["age"][1])) if "SEPARATED_GENDER" not in net_type else RESULTS_DICT[net_type].append("")
     print("Total PREDICTION time: " + str(diff_secs) + " - AVG: " + str(diff_secs) + "/" + str(max_imgs) + " = " + str(
         diff_secs / max_imgs))
     print("Confusion matriz: ")
@@ -141,10 +137,8 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False):
         api_key="6rubQB46mQ6XTVLSl26nH6zpV",
         project_name="Predictions",
     )
-    experiment.log_confusion_matrix(y_true[0], y_pred[0], title=NET_TYPE + " Gender",
-                                    file_name=NET_TYPE + "_Gender.json", labels=["Male", "Female"])
-    experiment.log_confusion_matrix(mapped_true, mapped_pred, title=NET_TYPE + " Age",
-                                    file_name=NET_TYPE + "_Age.json")  # , labels=["0-10", "10-20", "20-30", "30-40", "40-50", "50-60", "60-70", "70-80", "80-90", ">90"])
+    experiment.log_confusion_matrix(y_true[0], y_pred[0], title=net_type + " Gender", file_name=net_type + "_Gender.json", labels=["Male", "Female"])
+    experiment.log_confusion_matrix(mapped_true, mapped_pred, title=net_type + " Age", file_name=net_type + "_Age.json") # , labels=["0-10", "10-20", "20-30", "30-40", "40-50", "50-60", "60-70", "70-80", "80-90", ">90"])
     experiment.end()
     # label = decode_predictions(prediction)
 

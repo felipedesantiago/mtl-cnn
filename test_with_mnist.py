@@ -1,6 +1,6 @@
 import tensorflow as tf, traceback
 
-from train_models import weighted_categorical_crossentropy, class_weights, generate_class_weights
+from model import weighted_categorical_crossentropy, class_weights, generate_class_weights
 
 # TEST THE MODEL AND WEIGHTS
 ########################################################################################################################

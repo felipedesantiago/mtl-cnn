@@ -13,9 +13,9 @@ TRAIN_VAL_CERO = 0
 BATCH_SIZE = 32
 BATCH_SIZE_VAL = 32
 # Make sure that your iterator can generate at least `steps_per_epoch * epochs` batches
-EPOCHS = 40
-STEPS_EPOCHS = 1182  # training images #trainimages / batch_size * 2 (2 because of DA flip)
-STEPS_VAL = 294  # valid images #trainimages / batch_size * 2 (2 because of DA flip)
+EPOCHS = 3 # 40
+STEPS_EPOCHS = 3 # 1182  # training images #trainimages / batch_size * 2 (2 because of DA flip)
+STEPS_VAL = 3 # 294  # valid images #trainimages / batch_size * 2 (2 because of DA flip)
 
 DATA_PATH = "/content/gdrive/MyDrive/ColabNotebooks/images/datasets/UTKFace/"
 MODEL_PATH = "/content/gdrive/MyDrive/ColabNotebooks/models/"
@@ -33,3 +33,6 @@ MAX_PREDICTION_IMAGES = 75  # 75 #MAX: 78
 
 AGE_WEIGHTS = {0: 1, 1: 1.8446, 2: 0.5949, 3: 0.3593, 4: 0.61249, 5: 1.2032, 6: 1.2199, 7: 3.39511, 8: 3.3142, 9: 8.4695}
 GEN_WEIGHTS = {0: 0.955, 1: 1.049}
+
+# NET TYPES
+VGG16_COMMON = "VGG16_COMMON"
