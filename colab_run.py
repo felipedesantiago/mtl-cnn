@@ -46,7 +46,7 @@ def train_and_predict(train=True, predict=True, net_type="VGG16_COMMON"):
         if train:
             model = do_the_run(net_type=net_type) # LINE TO EDIT IN EACH DIFFERENT NOTEBOOK
             save_model(model, net_type)
-        if model and predict:
+        if predict:
             model = do_predictions(net_type=net_type)
         predict_images(model, max_imgs=1500, with_prints=False)
         tf.keras.utils.plot_model(model)
