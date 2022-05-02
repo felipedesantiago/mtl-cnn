@@ -6,14 +6,14 @@
 from custom_image_data_generator import CustomImageDataGenerator
 from keras.callbacks import ModelCheckpoint
 import datetime
-from parameters import *
 
 from tensorflow.keras.optimizers import Adam as adam_opt
 from keras.models import Model
-from keras.layers.convolutional import Conv2D # ???
-from keras.layers import Conv2D, Input        # ???
-from keras.layers.pooling import MaxPooling2D
-from keras.layers import Dense, Flatten
+from keras.layers.convolutional import Conv1D, Conv2D                              # ???
+from keras.layers import Dense, Input # ???
+
+from nets.vgg16 import build_vgg16_common_net, build_vgg16_indep_net, build_vgg16_nddr_net
+from nets.mobilenet import build_MN_common_net, build_MN_indep_net, build_MN_nddr_net
 from parameters import *
 
 def train_model(model, train_path, validation_path, net_type, epochs=EPOCHS):  # MAL EL CLASS MODE
@@ -38,8 +38,15 @@ def build_model_net(net_type):
     net = None
     input = Input(shape=(IMAGE_WIDTH, IMAGE_HEIGHT, DIMS), name="InputImage")
     if net_type == VGG16_COMMON:
-        net = build_vgg16_net(input)
-    model = Model(inputs=input, outputs=[net[0], net[1]], name=net_type)
+        net = build_vgg16_common_net(input)
+    elif net_type == VGG16_INDEPENDENT:
+        input = [Input(shape=(IMAGE_WIDTH, IMAGE_HEIGHT, DIMS), name="InputImage"), Input(shape=(IMAGE_WIDTH, IMAGE_HEIGHT, DIMS), name="InputImage2")]
+        net = build_vgg16_indep_net(input)
+    elif net_type == VGG16_NDDR:
+        net = build_vgg16_nddr_net(input)
+    model = Model(inputs=input, name=net_type, outputs=[
+        Dense(2, activation='softmax', name=VGG16_COMMON + "_GenderOut", trainable=True)(net[0]),
+        Dense(10, activation='softmax', name=VGG16_COMMON + "_AgeOut", trainable=True)(net[1])])
 
     opt = adam_opt(learning_rate=LEARNING_RATE)
 
@@ -58,36 +65,4 @@ def build_model_net(net_type):
     print(model.summary())
     return model
 
-
-def build_vgg16_net(input):
-    #######################################################################################
-    net = Conv2D(name="gender_age_conv_1_1", filters=64, input_shape=(28, 28, 3), kernel_size=(3, 3), padding="same", activation="relu")(input)  # sigmoid
-    net = Conv2D(name="gender_age_conv_1_2", filters=64, kernel_size=(3, 3), padding="same", activation="relu")(net)  # sigmoid
-    net = MaxPooling2D(name="gender_age_pool_1", pool_size=(2, 2), strides=(2, 2))(net)
-    net = Conv2D(name="gender_age_conv_2_1", filters=128, kernel_size=(3, 3), padding="same", activation="relu")(net)  # sigmoid
-    net = Conv2D(name="gender_age_conv_2_2", filters=128, kernel_size=(3, 3), padding="same", activation="relu")(net)  # sigmoid
-    net = MaxPooling2D(name="gender_age_pool_2", pool_size=(2, 2), strides=(2, 2))(net)
-
-    net = Conv2D(name="gender_age_conv_3_1", filters=256, kernel_size=(3, 3), padding="same", activation="relu")(net)  # sigmoid
-    net = Conv2D(name="gender_age_conv_3_2", filters=256, kernel_size=(3, 3), padding="same", activation="relu")(net)  # sigmoid
-    net = Conv2D(name="gender_age_conv_3_3", filters=256, kernel_size=(3, 3), padding="same", activation="relu")(net)  # sigmoid
-    net = MaxPooling2D(name="gender_age_pool_3", pool_size=(2, 2), strides=(2, 2))(net)
-
-    net = Conv2D(name="gender_age_conv_4_1", filters=512, kernel_size=(3, 3), padding="same", activation="relu")(net)  # sigmoid
-    net = Conv2D(name="gender_age_conv_4_2", filters=512, kernel_size=(3, 3), padding="same", activation="relu")(net)  # sigmoid
-    net = Conv2D(name="gender_age_conv_4_3", filters=512, kernel_size=(3, 3), padding="same", activation="relu")(net)  # sigmoid
-    net = MaxPooling2D(name="gender_age_pool_4", pool_size=(2, 2), strides=(2, 2))(net)
-
-    net = Conv2D(name="gender_age_conv_5_1", filters=512, kernel_size=(3, 3), padding="same", activation="relu")(net)  # sigmoid
-    net = Conv2D(name="gender_age_conv_5_2", filters=512, kernel_size=(3, 3), padding="same", activation="relu")(net)  # sigmoid
-    net = Conv2D(name="gender_age_conv_5_3", filters=512, kernel_size=(3, 3), padding="same", activation="relu")(net)  # sigmoid
-    net = MaxPooling2D(name="gender_age_pool_5", pool_size=(1, 1), strides=(2, 2))(net)  # pool_size SHOULD BE 2,2 but getting error
-    #######################################################################################
-
-    age = Flatten()(net)
-    gender = Flatten()(net)
-
-    output_gender = Dense(2, activation='softmax', name=VGG16_COMMON + "_GenderOut", trainable=True)(gender)
-    output_age = Dense(10, activation='softmax', name=VGG16_COMMON + "_AgeOut", trainable=True)(age)
-    return output_gender, output_age
 
