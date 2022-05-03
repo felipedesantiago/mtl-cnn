@@ -23,7 +23,7 @@ def train_model(model, train_path, validation_path, net_type, epochs=EPOCHS):  #
     valid_data = valid_data_gen.flow(validation_path, net_type, BATCH_SIZE_VAL)  # B
     # validate_batch_VGG_COMMON_GenderOut_accuracy
     # validate_VGG_COMMON_GenderOut_accuracy
-    checkpoint = ModelCheckpoint(filepath=MODEL_PATH+net_type+'_model.h5', monitor='val_VGG16_COMMON_AgeOut_accuracy', verbose=1, save_best_only=True, mode='max', period=1)
+    checkpoint = ModelCheckpoint(filepath=MODEL_PATH+net_type+'_model.h5', monitor='val_'+net_type+'_AgeOut_accuracy', verbose=1, save_best_only=True, mode='max', period=1)
     print("The TRAIN metric is: " + str(['accuracy']))
     # checkpoint = ModelCheckpoint(filepath=MODEL_PATH+NET_TYPE+'_model.h5', monitor='loss', verbose=1, save_best_only=True, mode='min', period=1)
     start_time = datetime.datetime.now()
@@ -45,8 +45,8 @@ def build_model_net(net_type):
     elif net_type == VGG16_NDDR:
         net = build_vgg16_nddr_net(input)
     model = Model(inputs=input, name=net_type, outputs=[
-        Dense(2, activation='softmax', name=VGG16_COMMON + "_GenderOut", trainable=True)(net[0]),
-        Dense(10, activation='softmax', name=VGG16_COMMON + "_AgeOut", trainable=True)(net[1])])
+        Dense(2, activation='softmax', name=net_type + "_GenderOut", trainable=True)(net[0]),
+        Dense(10, activation='softmax', name=net_type + "_AgeOut", trainable=True)(net[1])])
 
     opt = adam_opt(learning_rate=LEARNING_RATE)
 

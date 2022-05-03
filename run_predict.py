@@ -10,12 +10,12 @@ from parameters import *
 
 def do_the_run(net_type):
     # 'Epchos','Train steps','Val steps','Batch Size'
-    global NET_TYPE
-    NET_TYPE = net_type # "VGG16_COMMON"
+    # global NET_TYPE
+    # NET_TYPE = net_type # "VGG16_COMMON"
     # print(RESULTS_DICT)
     print("EPOCHS::: " + str(EPOCHS))
     # RESULTS_DICT[NET_TYPE] = [NET_TYPE, str(epochs), str(STEPS_EPOCHS), str(STEPS_VAL), str(BATCH_SIZE)]
-    print("\nStarting training with net " + str(NET_TYPE))
+    print("\nStarting training with net " + net_type)
 
     model = build_model_net(net_type)
     if model is None:
@@ -38,7 +38,7 @@ def do_the_run(net_type):
 
 def do_predictions(net_type):
     # RESULTS_DICT[NET_TYPE] = [NET_TYPE, str(epochs), str(STEPS_EPOCHS), str(STEPS_VAL), str(BATCH_SIZE)]
-    print("\nStarting load & predict with net " + str(net_type))
+    print("\nStarting load & predict with net " + net_type)
     model = load_model_from_disk(net_type)
     predict_images(model)
     return model
