@@ -86,8 +86,8 @@ class CustomImageDataGenerator(object):
             # inputs = tuple([np.stack(samples, axis=0) for samples in zip(*self.images)])
             # inputs = tuple(inputs)
             targets = {
-                net_type + '_GenderOut': np.asarray(to_categorical(self.labels[0], num_classes=2), dtype=np.float32),
-                net_type + '_AgeOut': np.asarray(to_categorical(self.labels[1], num_classes=10), dtype=np.float32)}
+                net_type + '_GenderOut': np.asarray(to_categorical(self.labels[0], num_classes=GENDER_CLASSES), dtype=np.float32),
+                net_type + '_AgeOut': np.asarray(to_categorical(self.labels[1], num_classes=AGE_CLASSES), dtype=np.float32)}
             # targets = [np.asarray(to_categorical(self.labels[0], num_classes=2), dtype=np.float32),np.asarray(to_categorical(self.labels[1], num_classes=10), dtype=np.float32)]
             self.reset()
             # print(inputs.shape)

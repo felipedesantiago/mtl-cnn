@@ -12,8 +12,8 @@ def print_batch(x1, y1, y2, with_prints=False):
         print("X1 shape: " + str(x1[0].shape))
         print("Gender generator - " + str(y1))  # matrix_as_shape_list(y1))
         print("Age generator - " + str(y2))  # matrix_as_shape_list(y2))
-        print(to_categorical(y1, num_classes=2).shape)
-        print(to_categorical(y2, num_classes=10).shape)
+        print(to_categorical(y1, num_classes=GENDER_CLASSES).shape)
+        print(to_categorical(y2, num_classes=AGE_CLASSES).shape)
 
 
 def matrix_as_shape_list(the_matrix):
@@ -90,7 +90,7 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False, net
         prediction = model.predict(img)
 
         preds = "Gender preds: "
-        for it in range(0, 2):
+        for it in range(0, GENDER_CLASSES):
             preds = preds + " " + str(prediction[gen_idx].item(it))
         print("GEN ERROR: " + str(
             not int(img_path.startswith(LABELS_GENDER_SMALL[np.argmax(prediction[gen_idx])]))) + " - Gender: " +
@@ -102,7 +102,7 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False, net
 
         preds = "Age preds: "
         age_posta = int(img_path.split("_")[1]) + 5
-        for it in range(0, 10):
+        for it in range(0, AGE_CLASSES):
             preds = preds + " " + str(prediction[age_idx].item(it))
         print("AGE ERROR: " + str(abs(age_posta - int(LABELS_AGE[np.argmax(prediction[age_idx])]))) + " - Age: " +
               LABELS_AGE[np.argmax(prediction[age_idx])] + " - " + str(preds)) if with_prints else None
@@ -128,8 +128,8 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False, net
     print("Gender true: " + str(y_true))
     print("Gender pred: " + str(y_pred))
     # mapped_true = [int(round(a/10)) for a in y_true[1]] # map(lambda a : a/float(10), y_true[1])
-    mapped_true = [int(floor(a / 10)) for a in y_true[1]]
-    mapped_pred = [int(floor(a / 10)) for a in y_pred[1]]
+    mapped_true = [int(floor(a / AGE_CLASSES)) for a in y_true[1]]
+    mapped_pred = [int(floor(a / AGE_CLASSES)) for a in y_pred[1]]
     # mapped_pred = [int(round(a/10)) for a in y_pred[1]] # map(lambda a : a/float(10), y_pred[1])
     print("Age true " + str(mapped_true))
     print("Age pred " + str(mapped_pred))
@@ -138,7 +138,7 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False, net
         project_name="Predictions",
     )
     experiment.log_confusion_matrix(y_true[0], y_pred[0], title=net_type + " Gender", file_name=net_type + "_Gender.json", labels=["Male", "Female"])
-    experiment.log_confusion_matrix(mapped_true, mapped_pred, title=net_type + " Age", file_name=net_type + "_Age.json") # , labels=["0-10", "10-20", "20-30", "30-40", "40-50", "50-60", "60-70", "70-80", "80-90", ">90"])
+    experiment.log_confusion_matrix(mapped_true, mapped_pred, title=net_type + " Age", file_name=net_type + "_Age.json", labels=["0-10", "10-20", "20-30", "30-40", "40-50", "50-70", ">70"])
     experiment.end()
     # label = decode_predictions(prediction)
 

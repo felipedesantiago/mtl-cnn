@@ -55,8 +55,8 @@ def build_vgg16_net(loss_gender, loss_age, net_type):
     age = Flatten()(net)
     gender = Flatten()(net)
 
-    output_gender = Dense(2, activation='softmax', name=net_type + "_GenderOut", trainable=trainable_gender)(gender)
-    output_age = Dense(10, activation='softmax', name=net_type + "_AgeOut", trainable=trainable_age)(age)
+    output_gender = Dense(GENDER_CLASSES, activation='softmax', name=net_type + "_GenderOut", trainable=trainable_gender)(gender)
+    output_age = Dense(AGE_CLASSES, activation='softmax', name=net_type + "_AgeOut", trainable=trainable_age)(age)
 
     model = Model(inputs=input, outputs=[output_gender, output_age], name=net_type)
 

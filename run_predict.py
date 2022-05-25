@@ -8,7 +8,7 @@ from utils import plot_history, predict_images
 from load_save_model import load_model_from_disk, save_model
 from parameters import *
 
-def do_the_run(net_type):
+def do_the_run(net_type, test=False):
     # 'Epchos','Train steps','Val steps','Batch Size'
     # global NET_TYPE
     # NET_TYPE = net_type # "VGG16_COMMON"

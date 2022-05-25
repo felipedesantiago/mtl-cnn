@@ -45,8 +45,8 @@ def build_model_net(net_type):
     elif net_type == VGG16_NDDR:
         net = build_vgg16_nddr_net(input)
     model = Model(inputs=input, name=net_type, outputs=[
-        Dense(2, activation='softmax', name=net_type + "_GenderOut", trainable=True)(net[0]),
-        Dense(10, activation='softmax', name=net_type + "_AgeOut", trainable=True)(net[1])])
+        Dense(GENDER_CLASSES, activation='softmax', name=net_type + "_GenderOut", trainable=True)(net[0]),
+        Dense(AGE_CLASSES, activation='softmax', name=net_type + "_AgeOut", trainable=True)(net[1])])
 
     opt = adam_opt(learning_rate=LEARNING_RATE)
 
