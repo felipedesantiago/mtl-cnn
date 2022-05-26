@@ -33,6 +33,7 @@ LABELS_GENDER_SMALL = ['m', 'f']
 LABELS_AGE = ['0', '10', '20', '30', '40', '50', '70']
 
 # TOTALS = {"genders": {0: 0, 1: 0}, "ages": {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0}}
+TOTALS = {"genders": {0: 0, 1: 0}, "ages": {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0}}
 
 MAX_PREDICTION_IMAGES = 1000  # 75 #MAX: 78
 
