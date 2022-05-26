@@ -101,15 +101,15 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False, net
         y_pred[0].append(np.argmax(prediction[gen_idx]))
 
         preds = "Age preds: "
-        age_posta = int(img_path.split("_")[1]) + 5
+        age_posta = int(img_path.split("_")[1])
         for it in range(0, AGE_CLASSES):
             preds = preds + " " + str(prediction[age_idx].item(it))
         print("AGE CLASS ERROR: " + str(abs(age_posta - int(LABELS_AGE[np.argmax(prediction[age_idx])]))) + " - Age: " +
               AGE_CLASS_INDEX[np.argmax(prediction[age_idx])] + " - " + str(preds)) if with_prints else None
-        pred_accuracy["age"][0] += abs(age_posta - int(AGE_CLASS_INDEX[np.argmax(prediction[age_idx])])) + 5
+        pred_accuracy["age"][0] += abs(age_posta - int(AGE_CLASS_INDEX[np.argmax(prediction[age_idx])]))
         pred_accuracy["age"][1] += 1
         y_true[1].append(age_posta)
-        y_pred[1].append(int(LABELS_AGE[np.argmax(prediction[age_idx])]) + 5)
+        y_pred[1].append(int(AGE_CLASS_INDEX[np.argmax(prediction[age_idx])]))
         if predicted == max_imgs:
             break
         else:
