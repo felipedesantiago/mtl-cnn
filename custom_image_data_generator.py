@@ -101,6 +101,6 @@ class CustomImageDataGenerator(object):
                 print("returning because nothing")
                 return
             elif net_type == VGG16_INDEPENDENT:
-                yield inputs, targets
-            else:
                 yield [inputs, inputs], targets
+            else:
+                yield inputs, targets
