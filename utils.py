@@ -87,7 +87,10 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False, net
         img = cv2.resize(img, (IMAGE_WIDTH, IMAGE_HEIGHT))
         img = np.expand_dims(img, axis=0)
         # print("predicting the net: "+net_type)
-        prediction = model.predict(img)
+        if net_type in [VGG16_INDEPENDENT, MN_INDEPENDENT]:
+            prediction = model.predict([img, img])
+        else:
+            prediction = model.predict(img)
 
         preds = "Gender preds: "
         for it in range(0, GENDER_CLASSES):
