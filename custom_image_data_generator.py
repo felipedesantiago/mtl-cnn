@@ -100,5 +100,7 @@ class CustomImageDataGenerator(object):
             if net_type is None and len(shuffled_paths) == 0:
                 print("returning because nothing")
                 return
+            elif net_type == VGG16_INDEPENDENT:
+                yield inputs, targets
             else:
-                yield (inputs, targets)
+                yield [inputs, inputs], targets
