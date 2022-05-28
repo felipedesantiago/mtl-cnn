@@ -48,7 +48,7 @@ def train_and_predict(train=True, predict=True, net_type="VGG16_COMMON"):
             save_model(model, net_type)
         if predict:
             model = do_predictions(net_type=net_type)
-        predict_images(model, max_imgs=1500, with_prints=False)
+        # predict_images(model, max_imgs=1500, with_prints=False, net_type=net_type)
         tf.keras.utils.plot_model(model)
     except Exception as e:
         print("\nError with model "+str(model)+": " + str(e))
