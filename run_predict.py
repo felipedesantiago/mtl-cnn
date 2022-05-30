@@ -24,7 +24,7 @@ def do_the_run(net_type, test=False):
         print("MODEL AINT NONE")
 
     history = train_model(model, DATA_PATH, DATA_PATH, net_type)
-    plot_history(history)
+    plot_history(history, net_type=net_type)
     # RESULTS_DICT[NET_TYPE].append(str(model.count_params()))
     print("\nAmount of params: " + str(model.count_params()))
     # save_model(model)
