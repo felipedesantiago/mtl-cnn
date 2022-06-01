@@ -111,8 +111,8 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False, net
               AGE_CLASS_INDEX[np.argmax(prediction[age_idx])] + " - " + str(preds)) if with_prints else None
         pred_accuracy["age"][0] += abs(age_posta - int(AGE_CLASS_INDEX[np.argmax(prediction[age_idx])]))
         pred_accuracy["age"][1] += 1
-        y_true[1].append(int(floor(age_posta/10)))
-        y_pred[1].append(int(AGE_CLASS_INDEX[np.argmax(prediction[age_idx])]))
+        y_true[1].append(AGE_CLASS_INDEX[int(floor(age_posta/10))])
+        y_pred[1].append(AGE_CLASS_INDEX[np.argmax(prediction[age_idx])])
         if predicted == max_imgs:
             break
         else:
@@ -130,7 +130,7 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False, net
     print("Confusion matriz: ")
     print("True: " + str(y_true))
     print("Pred: " + str(y_pred))
-    mapped_true = [int(a / 10) for a in y_true[1]]
+    mapped_true = y_true[1] # [int(a / 10) for a in y_true[1]]
     mapped_pred = y_pred[1] # [int(floor(a / AGE_CLASSES)) for a in y_pred[1]]
     print("Age true " + str(mapped_true))
     print("Age pred " + str(mapped_pred))
