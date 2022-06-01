@@ -128,12 +128,10 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False, net
     print("Total PREDICTION time: " + str(diff_secs) + " - AVG: " + str(diff_secs) + "/" + str(max_imgs) + " = " + str(
         diff_secs / max_imgs))
     print("Confusion matriz: ")
-    print("Gender true: " + str(y_true))
-    print("Gender pred: " + str(y_pred))
-    # mapped_true = [int(round(a/10)) for a in y_true[1]] # map(lambda a : a/float(10), y_true[1])
-    mapped_true = [int(floor(a / AGE_CLASSES)) for a in y_true[1]]
-    mapped_pred = [int(floor(a / AGE_CLASSES)) for a in y_pred[1]]
-    # mapped_pred = [int(round(a/10)) for a in y_pred[1]] # map(lambda a : a/float(10), y_pred[1])
+    print("True: " + str(y_true))
+    print("Pred: " + str(y_pred))
+    mapped_true = [int(a / 10) for a in y_true[1]]
+    mapped_pred = y_pred[1] # [int(floor(a / AGE_CLASSES)) for a in y_pred[1]]
     print("Age true " + str(mapped_true))
     print("Age pred " + str(mapped_pred))
     experiment = comet_ml.Experiment(
