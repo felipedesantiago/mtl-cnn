@@ -139,7 +139,7 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False, net
         project_name="Predictions",
     )
     experiment.log_confusion_matrix(y_true[0], y_pred[0], title=net_type + " Gender", file_name=net_type + "_Gender.json", labels=["Male", "Female"])
-    experiment.log_confusion_matrix(mapped_true, mapped_pred, title=net_type + " Age", file_name=net_type + "_Age.json", labels=["0-10", "10-20", "20-30", "30-40", "40-50", "50-70", ">70"])
+    experiment.log_confusion_matrix(mapped_true, mapped_pred, title=net_type + " Age", file_name=net_type + "_Age.json")#, labels=["0-10", "10-20", "20-30", "30-40", "40-50", "50-70", ">70"])
     experiment.end()
     # label = decode_predictions(prediction)
 
