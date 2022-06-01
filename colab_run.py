@@ -13,6 +13,7 @@ Original file is located at
 import tensorflow as tf, traceback
 from tensorflow import keras as keras
 
+import parameters
 from custom_image_data_generator import CustomImageDataGenerator
 from utils import create_results_filename, create_header, write_to_file
 from run_predict import do_predictions, do_the_run, predict_images
@@ -38,9 +39,10 @@ def test_generator(net_type):
 
     # print(RESULTS_DICT)
 
-def train_and_predict(train=True, predict=True, net_type="VGG16_COMMON"):
+def train_and_predict(train=True, predict=True, net_type="VGG16_COMMON", test=False):
     # for key, value in d.items():
     model = None
+    parameters.TEST = test
     try:
         # write_to_file(create_results_filename())
         if train:

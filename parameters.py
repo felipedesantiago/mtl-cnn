@@ -13,9 +13,11 @@ TRAIN_VAL_CERO = 0
 BATCH_SIZE = 32
 BATCH_SIZE_VAL = 32
 # Make sure that your iterator can generate at least `steps_per_epoch * epochs` batches
-EPOCHS = 3 # 40
-STEPS_EPOCHS = 10 # 1182  # training images #trainimages / batch_size * 2 (2 because of DA flip)
-STEPS_VAL = 3 # 294  # valid images #trainimages / batch_size * 2 (2 because of DA flip)
+
+TEST = False
+EPOCHS = 3 if TEST else 40
+STEPS_EPOCHS = 5 if TEST else 1182  # training images #trainimages / batch_size * 2 (2 because of DA flip)
+STEPS_VAL = 3 if TEST else 294  # valid images #trainimages / batch_size * 2 (2 because of DA flip)
 
 DATA_PATH = "/content/gdrive/MyDrive/ColabNotebooks/images/datasets/UTKFace/"
 DATA_TEST_PATH = "/content/gdrive/MyDrive/ColabNotebooks/images/datasets/predict/"
