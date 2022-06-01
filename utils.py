@@ -111,7 +111,7 @@ def predict_images(model, max_imgs=MAX_PREDICTION_IMAGES, with_prints=False, net
               AGE_CLASS_INDEX[np.argmax(prediction[age_idx])] + " - " + str(preds)) if with_prints else None
         pred_accuracy["age"][0] += abs(age_posta - int(AGE_CLASS_INDEX[np.argmax(prediction[age_idx])]))
         pred_accuracy["age"][1] += 1
-        y_true[1].append(age_posta)
+        y_true[1].append(int(floor(age_posta/10)))
         y_pred[1].append(int(AGE_CLASS_INDEX[np.argmax(prediction[age_idx])]))
         if predicted == max_imgs:
             break
