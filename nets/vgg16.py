@@ -28,9 +28,7 @@ def build_vgg16_common_net(input):
     net = MaxPooling2D(name="gender_age_pool_5", pool_size=(1, 1), strides=(2, 2))(net)  # pool_size SHOULD BE 2,2 but getting error
     #######################################################################################
 
-    gender = Flatten()(net)
-    age = Flatten()(net)
-    return gender, age
+    return Flatten()(net), Flatten()(net)
 
 
 def build_vgg16_indep_net(input):
@@ -77,9 +75,7 @@ def build_vgg16_indep_net(input):
     age = MaxPooling2D(name="age_pool_5", pool_size=(1, 1), strides=(2, 2))(age)
     #######################################################################################
 
-    gender = Flatten()(gender)
-    age = Flatten()(age)
-    return gender, age
+    return Flatten()(gender), Flatten()(age)
 
 def build_vgg16_nddr_net(input):
     def nddr_layer(net_1, net_2):
@@ -141,6 +137,4 @@ def build_vgg16_nddr_net(input):
     gender, age = nddr_layer(gender, age)
     #######################################################################################
 
-    gender = Flatten()(gender)
-    age = Flatten()(age)
-    return gender, age
+    return Flatten()(gender), Flatten()(age)

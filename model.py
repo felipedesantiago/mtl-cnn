@@ -13,7 +13,7 @@ from keras.layers.convolutional import Conv1D, Conv2D                           
 from keras.layers import Dense, Input # ???
 
 from nets.vgg16 import build_vgg16_common_net, build_vgg16_indep_net, build_vgg16_nddr_net
-from nets.mobilenet import build_MN_common_net, build_MN_indep_net, build_MN_nddr_net
+from nets.mobilenet import build_mn_common_net, build_mn_indep_net, build_mn_nddr_net
 from parameters import *
 
 def train_model(model, train_path, validation_path, net_type, epochs=EPOCHS):  # MAL EL CLASS MODE
@@ -37,13 +37,21 @@ def train_model(model, train_path, validation_path, net_type, epochs=EPOCHS):  #
 def build_model_net(net_type):
     net = None
     input = Input(shape=(IMAGE_WIDTH, IMAGE_HEIGHT, DIMS), name="InputImage")
+    double_input = lambda: [Input(shape=(IMAGE_WIDTH, IMAGE_HEIGHT, DIMS), name="InputImage"), Input(shape=(IMAGE_WIDTH, IMAGE_HEIGHT, DIMS), name="InputImage2")]
     if net_type == VGG16_COMMON:
         net = build_vgg16_common_net(input)
     elif net_type == VGG16_INDEPENDENT:
-        input = [Input(shape=(IMAGE_WIDTH, IMAGE_HEIGHT, DIMS), name="InputImage"), Input(shape=(IMAGE_WIDTH, IMAGE_HEIGHT, DIMS), name="InputImage2")]
+        input = double_input
         net = build_vgg16_indep_net(input)
     elif net_type == VGG16_NDDR:
         net = build_vgg16_nddr_net(input)
+    elif net_type == MN_COMMON:
+        net = build_mn_common_net(input)
+    elif net_type == MN_INDEPENDENT:
+        input = double_input
+        net = build_mn_indep_net(input)
+    elif net_type == MN_NDDR:
+        net = build_mn_nddr_net(input)
     model = Model(inputs=input, name=net_type, outputs=[
         Dense(GENDER_CLASSES, activation='softmax', name=net_type + "_GenderOut", trainable=True)(net[0]),
         Dense(AGE_CLASSES, activation='softmax', name=net_type + "_AgeOut", trainable=True)(net[1])])
