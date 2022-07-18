@@ -27,7 +27,6 @@ def build_vgg16_common_net(input):
     net = Conv2D(name="gender_age_conv_5_3", filters=512, kernel_size=(3, 3), padding="same", activation="relu")(net)  # sigmoid
     net = MaxPooling2D(name="gender_age_pool_5", pool_size=(1, 1), strides=(2, 2))(net)  # pool_size SHOULD BE 2,2 but getting error
     #######################################################################################
-
     return Flatten()(net), Flatten()(net)
 
 
@@ -74,7 +73,6 @@ def build_vgg16_indep_net(input):
     age = Conv2D(name="age_conv_5_3", filters=512, kernel_size=(3, 3), padding="same", activation="relu")(age)
     age = MaxPooling2D(name="age_pool_5", pool_size=(1, 1), strides=(2, 2))(age)
     #######################################################################################
-
     return Flatten()(gender), Flatten()(age)
 
 def build_vgg16_nddr_net(input):
@@ -136,5 +134,4 @@ def build_vgg16_nddr_net(input):
     age = MaxPooling2D(name="age_pool_5", pool_size=(1, 1), strides=(2, 2))(age)
     gender, age = nddr_layer(gender, age)
     #######################################################################################
-
     return Flatten()(gender), Flatten()(age)

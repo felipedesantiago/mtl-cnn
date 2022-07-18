@@ -21,14 +21,35 @@ def build_mn_common_net(input, model_type='large', pooling_type='avg', include_t
     pooled_shape = (1, 1, net.shape[-1])
     net = Reshape(pooled_shape)(net)
     net = Conv2D(1280, (1, 1), strides=(1, 1), padding='valid', use_bias=True)(net)
-    net2 = Conv2D(len(LABELS_AGE), (1, 1), strides=(1, 1), padding='valid', use_bias=True)(net)
+    gender = Conv2D(len(LABELS_GENDER), (1, 1), strides=(1, 1), padding='valid', use_bias=True)(net)
+    age = Conv2D(len(LABELS_AGE), (1, 1), strides=(1, 1), padding='valid', use_bias=True)(net)
+    return Flatten()(gender), Flatten()(age)
+
+def build_mn_indep_net(input, model_type='large', pooling_type='avg', include_top=True):
+    # ** feature extraction layers
+    net = __conv2d_block(input[0], 16, kernel=(3, 3), strides=(2, 2), is_use_bias=False, padding='same', activation='HS')
+    net2 = __conv2d_block(input[1], 16, kernel=(3, 3), strides=(2, 2), is_use_bias=False, padding='same', activation='HS')
+    config_list = large_config_list
+    for config in config_list:
+        net = __bottleneck_block(net, *config)
+        net2 = __bottleneck_block(net2, *config)
+    # ** final layers
+    net = __conv2d_block(net, 960, kernel=(3, 3), strides=(1, 1), is_use_bias=True, padding='same', activation='HS', name='output_map')
+    net2 = __conv2d_block(net2, 960, kernel=(3, 3), strides=(1, 1), is_use_bias=True, padding='same', activation='HS', name='output_map2')
+    net = GlobalAveragePooling2D()(net) if pooling_type == 'avg' else __global_depthwise_block(net)
+    net2 = GlobalAveragePooling2D()(net2) if pooling_type == 'avg' else __global_depthwise_block(net2)
+    # ** shape=(None, channel) --> shape(1, 1, channel)
+    pooled_shape = (1, 1, net.shape[-1])
+    pooled_shape2 = (1, 1, net2.shape[-1])
+    net = Reshape(pooled_shape)(net)
+    net2 = Reshape(pooled_shape2)(net2)
+    net = Conv2D(1280, (1, 1), strides=(1, 1), padding='valid', use_bias=True)(net)
+    net2 = Conv2D(1280, (1, 1), strides=(1, 1), padding='valid', use_bias=True)(net2)
+    net2 = Conv2D(len(LABELS_AGE), (1, 1), strides=(1, 1), padding='valid', use_bias=True)(net2)
     net = Conv2D(len(LABELS_GENDER), (1, 1), strides=(1, 1), padding='valid', use_bias=True)(net)
     return Flatten()(net), Flatten()(net2)
 
-def build_mn_indep_net(input):
-    return gender, age
-
-def build_mn_nddr_net(input):
+def build_mn_nddr_net(input_size, model_type='large', pooling_type='avg', include_top=True):
     def nddr_layer(net_1, net_2):
         net_1 = BatchNormalization()(net_1)
         net_2 = BatchNormalization()(net_2)
@@ -36,7 +57,34 @@ def build_mn_nddr_net(input):
         nddr = Conv1D(filters=1, kernel_size=1, activation="relu")(nddr)
         # nddr = Conv2D(filters=64, kernel_size=(3,3), activation="relu")(nddr)
         return nddr, nddr
-    return gender, age
+    # ** input layer
+    input = Input(shape=(input_size, input_size, 3))
+    # ** feature extraction layers
+    net = __conv2d_block(input, 16, kernel=(3, 3), strides=(2, 2), is_use_bias=False, padding='same', activation='HS')
+    config_list = large_config_list
+
+    for config in config_list:
+        net = __bottleneck_block(net, *config)
+    # ** final layers
+    net = __conv2d_block(net, 960, kernel=(3, 3), strides=(1, 1), is_use_bias=True, padding='same', activation='HS', name='output_map')
+    net = GlobalAveragePooling2D()(net) if pooling_type == 'avg' else __global_depthwise_block(net)
+
+    # ** shape=(None, channel) --> shape(1, 1, channel)
+    # pooled_shape = (1, 1, net._keras_shape[-1])
+    # pooled_shape = (1, 1, net2._keras_shape[-1])
+    pooled_shape = (1, 1, net.shape[-1])
+    # pooled_shape = (1, 1, net2.shape[-1])
+
+    net = Reshape(pooled_shape)(net)
+    # net2 = Reshape(pooled_shape)(net2)
+    net = Conv2D(1280, (1, 1), strides=(1, 1), padding='valid', use_bias=True)(net)
+    # net2 = Conv2D(1280, (1, 1), strides=(1, 1), padding='valid', use_bias=True)(net2)
+
+    net2 = Conv2D(len(LABELS_AGE), (1, 1), strides=(1, 1), padding='valid', use_bias=True)(net)
+    net = Conv2D(len(LABELS_GENDER), (1, 1), strides=(1, 1), padding='valid', use_bias=True)(net)
+
+    net = Flatten()(net)
+    net2 = Flatten()(net2)
 
 
 
