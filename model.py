@@ -37,7 +37,7 @@ def train_model(model, train_path, validation_path, net_type, epochs=EPOCHS):  #
 def build_model_net(net_type):
     net = None
     input = Input(shape=(IMAGE_WIDTH, IMAGE_HEIGHT, DIMS), name="InputImage")
-    double_input = lambda: [Input(shape=(IMAGE_WIDTH, IMAGE_HEIGHT, DIMS), name="InputImage"), Input(shape=(IMAGE_WIDTH, IMAGE_HEIGHT, DIMS), name="InputImage2")]
+    double_input = [Input(shape=(IMAGE_WIDTH, IMAGE_HEIGHT, DIMS), name="InputImage"), Input(shape=(IMAGE_WIDTH, IMAGE_HEIGHT, DIMS), name="InputImage2")]
     if net_type == VGG16_COMMON:
         net = build_vgg16_common_net(input)
     elif net_type == VGG16_INDEPENDENT:
